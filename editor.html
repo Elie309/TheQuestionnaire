@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Question Editor - TheQuestions</title>
+    <!-- Google Noto for Arabic support -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="stylesheet" href="styles/arabic-support.css" />
+    <link rel="stylesheet" href="styles/editor-styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="editor-container">
+        <header class="editor-header">
+          <div class="logo-section">
+            <img id="logo-img" class="logo-img" src="images/logo.png" alt="Logo" />
+            <h1>Question Editor</h1>
+          </div>
+          <div class="editor-actions">
+            <button id="back-to-game-btn" class="editor-btn secondary-btn">
+              Back to Game
+            </button>
+            <button id="export-set-btn" class="editor-btn primary-btn">
+              Save Question Set
+            </button>
+          </div>
+        </header>
+
+        <div class="editor-content">
+          <div class="editor-sidebar">
+            <div class="set-info">
+              <div class="form-group">
+                <label for="set-name">Question Set Name</label>
+                <input
+                  type="text"
+                  id="set-name"
+                  placeholder="e.g., General Knowledge, Science, etc."
+                />
+              </div>
+            </div>
+            <div class="question-list-container">
+              <h3>Questions</h3>
+              <div id="question-list" class="question-list">
+                <!-- Questions will be added dynamically -->
+              </div>
+              <button id="add-question-btn" class="editor-btn primary-btn">
+                Add New Question
+              </button>
+            </div>
+          </div>
+
+          <div class="editor-main">
+            <div id="question-edit-area" class="question-edit-area">
+              <div class="question-position">
+                <label for="question-id">Position</label>
+                <select id="question-id">
+                  <option value="A1">A1</option>
+                  <option value="A2">A2</option>
+                  <option value="A3">A3</option>
+                  <option value="A4">A4</option>
+                  <option value="A5">A5</option>
+                  <option value="B1">B1</option>
+                  <option value="B2">B2</option>
+                  <option value="B3">B3</option>
+                  <option value="B4">B4</option>
+                  <option value="B5">B5</option>
+                  <option value="C1">C1</option>
+                  <option value="C2">C2</option>
+                  <option value="C3">C3</option>
+                  <option value="C4">C4</option>
+                  <option value="C5">C5</option>
+                  <option value="D1">D1</option>
+                  <option value="D2">D2</option>
+                  <option value="D3">D3</option>
+                  <option value="D4">D4</option>
+                  <option value="D5">D5</option>
+                  <option value="E1">E1</option>
+                  <option value="E2">E2</option>
+                  <option value="E3">E3</option>
+                  <option value="E4">E4</option>
+                  <option value="E5">E5</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="question-text">Question</label>
+                <textarea
+                  id="question-text"
+                  dir="auto"
+                  rows="3"
+                  placeholder="Enter your question here"
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="answer-text">Answer</label>
+                <textarea
+                  id="answer-text"
+                  dir="auto"
+                  rows="3"
+                  placeholder="Enter the answer here"
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Question Image (Optional)</label>
+                <div class="image-upload">
+                  <input
+                    type="file"
+                    id="question-image-upload"
+                    accept="image/*"
+                  />
+                  <div class="image-preview-container">
+                    <img
+                      id="question-image-preview"
+                      class="image-preview hidden"
+                      alt="Question image preview"
+                    />
+                    <button
+                      id="remove-question-image"
+                      class="remove-image-btn hidden"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <label for="question-image-upload" class="upload-btn"
+                    >Choose Image</label
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Answer Image (Optional)</label>
+                <div class="image-upload">
+                  <input
+                    type="file"
+                    id="answer-image-upload"
+                    accept="image/*"
+                  />
+                  <div class="image-preview-container">
+                    <img
+                      id="answer-image-preview"
+                      class="image-preview hidden"
+                      alt="Answer image preview"
+                    />
+                    <button
+                      id="remove-answer-image"
+                      class="remove-image-btn hidden"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <label for="answer-image-upload" class="upload-btn"
+                    >Choose Image</label
+                  >
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button id="delete-question-btn" class="editor-btn danger-btn">
+                  Delete Question
+                </button>
+                <button id="save-question-btn" class="editor-btn primary-btn">
+                  Save Question
+                </button>
+              </div>
+            </div>
+
+            <div id="empty-state" class="empty-state">
+              <div class="empty-state-content">
+                <div class="empty-icon">📝</div>
+                <h3>No Question Selected</h3>
+                <p>Add a new question or select an existing one to edit</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="javascript/editor.js"></script>
+  </body>
+</html>
