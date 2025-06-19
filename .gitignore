@@ -3,3 +3,5 @@ uploads/*
 
 questions/*
 !questions/.gitkeep
+!questions/sample_questions.csv
+!questions/arabic_questions.csv
