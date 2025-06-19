@@ -47,26 +47,6 @@ B1,Who painted Mona Lisa?,Leonardo da Vinci,,
 2. Save the generated CSV file
 3. Edit in Excel or any spreadsheet program
 
-## File Structure
-
-```
-TheQuestions/
-├── index.html          # Main HTML file
-├── editor.html         # Question editor HTML file
-├── styles.css          # Game CSS styles
-├── editor-styles.css   # Editor specific CSS
-├── arabic-support.css  # Arabic language support CSS
-├── script.js           # Game logic and functionality
-├── editor.js           # Editor logic and functionality
-├── api.php             # PHP backend API
-├── launch.php          # PHP server launcher script
-├── run.bat             # Windows batch script to run PHP server
-├── sw.js               # Service worker for offline support
-├── questions/          # CSV question files directory
-├── images/             # Uploaded images directory
-└── README.md           # This file
-```
-
 ## Technical Details
 
 - **Minimal Dependencies**: HTML5, CSS3, ES6+ JavaScript, and PHP 7.2+
@@ -139,23 +119,13 @@ For proper image handling in the static HTML version:
 2. After downloading question sets and images, place them in the appropriate folders
 3. Open `index.html` to use the app with your custom questions and images
 
-### File Structure
+### Project Organization
 
-```
-TheQuestions/
-├── questions/        # Question sets (CSV files)
-│   ├── sample_questions.csv
-│   └── arabic_questions.csv
-├── images/           # Uploaded images
-│   └── (uploaded image files)
-├── index.html        # Main quiz app
-├── editor.html       # Question editor
-├── script.js         # Main app logic
-├── editor.js         # Editor logic
-├── styles.css        # Main styles
-├── editor-styles.css # Editor styles
-└── arabic-support.css # Arabic language support
-```
+The project structure is detailed at the beginning of this document. Key directories:
+
+- `questions/` - Contains all question CSV files
+- `images/` - Stores all needed images like logo, icons.
+- `uploads/` - Used for questions images
 
 ### Image Naming
 
