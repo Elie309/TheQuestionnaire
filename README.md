@@ -17,7 +17,7 @@ A quiz game web app with a PHP backend. Features a 5x5 question grid with HTML, 
 
 ## How to Use
 
-1. **Start the Server**: Run `run.bat` (Windows) or `php -S localhost:8000` in terminal
+1. **Start the Server**: `php -S localhost:8000` in terminal
 2. **Start the Game**: Open `http://localhost:8000` in any modern web browser
 3. **Select Questions**: Click any cell (A1-E5) to view a question
 3. **Reveal Answer**: Press any key while viewing a question to show the answer
