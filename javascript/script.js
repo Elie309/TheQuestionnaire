@@ -239,15 +239,29 @@ class QuizGame {
         document.getElementById('question-id').textContent = `Question ${questionId}`;
 
         const questionTextEl = document.getElementById('question-text');
-        const answerTextEl = document.getElementById('answer-text');
-
-        // Set text content
+        const answerTextEl = document.getElementById('answer-text');        // Set text content
         questionTextEl.textContent = question.question;
         answerTextEl.textContent = question.answer;
 
         // Set appropriate text direction based on content
         this.setTextDirection(questionTextEl, question.question);
-        this.setTextDirection(answerTextEl, question.answer);        // Handle images
+        this.setTextDirection(answerTextEl, question.answer);
+        
+        // Set direction on content layout containers
+        const questionContentLayout = questionTextEl.closest('.content-layout');
+        const answerContentLayout = answerTextEl.closest('.content-layout');
+        
+        if (this.containsArabic(question.question)) {
+            questionContentLayout.setAttribute('dir', 'rtl');
+        } else {
+            questionContentLayout.setAttribute('dir', 'ltr');
+        }
+        
+        if (this.containsArabic(question.answer)) {
+            answerContentLayout.setAttribute('dir', 'rtl');
+        } else {
+            answerContentLayout.setAttribute('dir', 'ltr');
+        }// Handle images
         const questionImage = document.getElementById('question-image');
         const answerImage = document.getElementById('answer-image');
 
@@ -436,26 +450,26 @@ class QuizGame {
             }
         };
         reader.readAsText(file);
-    }
-
-    parseCSV(csv) {
-        const lines = csv.split('\n').map(line => line.trim()).filter(line => line);
+    }    parseCSV(csv) {
         const questions = {};
-
+        
+        // Improved CSV parsing that handles multiline fields
+        const rows = this.parseCSVRows(csv);
+        
         // Skip header if it exists
         let startIndex = 0;
-        if (lines[0] && (lines[0].toLowerCase().includes('question') || lines[0].toLowerCase().includes('id'))) {
+        if (rows.length > 0 && rows[0].length > 0 && 
+            (rows[0][0].toLowerCase().includes('question') || rows[0][0].toLowerCase().includes('id'))) {
             startIndex = 1;
         }
 
-        for (let i = startIndex; i < lines.length; i++) {
-            const line = lines[i];
-            const columns = this.parseCSVLine(line);
+        for (let i = startIndex; i < rows.length; i++) {
+            const columns = rows[i];
 
             if (columns.length >= 3) {
-                const id = columns[0].trim();
-                const question = columns[1].trim();
-                const answer = columns[2].trim();
+                const id = columns[0] ? columns[0].trim() : '';
+                const question = columns[1] ? columns[1].trim() : '';
+                const answer = columns[2] ? columns[2].trim() : '';
                 const questionImage = columns[3] ? columns[3].trim() : null;
                 const answerImage = columns[4] ? columns[4].trim() : null;
 
@@ -471,6 +485,62 @@ class QuizGame {
         }
 
         return questions;
+    }
+
+    parseCSVRows(csv) {
+        const rows = [];
+        let currentRow = [];
+        let currentField = '';
+        let inQuotes = false;
+        let i = 0;
+
+        while (i < csv.length) {
+            const char = csv[i];
+            const nextChar = csv[i + 1];
+
+            if (char === '"') {
+                if (inQuotes && nextChar === '"') {
+                    // Escaped quote within quoted field
+                    currentField += '"';
+                    i++; // Skip the next quote
+                } else {
+                    // Toggle quote state
+                    inQuotes = !inQuotes;
+                }
+            } else if (char === ',' && !inQuotes) {
+                // End of field
+                currentRow.push(currentField);
+                currentField = '';
+            } else if ((char === '\n' || char === '\r') && !inQuotes) {
+                // End of row (only if not in quotes)
+                currentRow.push(currentField);
+                if (currentRow.some(field => field.trim() !== '')) {
+                    rows.push(currentRow);
+                }
+                currentRow = [];
+                currentField = '';
+                
+                // Skip \r\n combination
+                if (char === '\r' && nextChar === '\n') {
+                    i++;
+                }
+            } else {
+                // Regular character (including newlines within quoted fields)
+                currentField += char;
+            }
+            
+            i++;
+        }
+
+        // Add the last field and row if there's content
+        if (currentField !== '' || currentRow.length > 0) {
+            currentRow.push(currentField);
+            if (currentRow.some(field => field.trim() !== '')) {
+                rows.push(currentRow);
+            }
+        }
+
+        return rows;
     }
 
     parseCSVLine(line) {

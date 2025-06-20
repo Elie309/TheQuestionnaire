@@ -38,11 +38,21 @@ html[lang="ar"] body {
     border-right: 4px solid #34a853;
 }
 
+/* Content layout direction for RTL */
+.content-layout[dir="rtl"] {
+    flex-direction: row-reverse;
+}
+
+/* Ensure proper spacing for RTL content layouts */
+[dir="rtl"] .content-layout {
+    text-align: right;
+}
+
 /* Ensure correct vertical text alignment */
 .question-cell,
 .question-text, 
 .answer-text {
-    line-height: 1.7;
+    line-height: 1.7; /* Slightly increased for better readability */
 }
 
 /* Fix for Arabic numbers in grid */
