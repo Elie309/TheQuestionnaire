@@ -1,4 +1,4 @@
-# TheQuestions - Quiz Game
+# TheQuestionnaire - Quiz Game
 
 A quiz game web app with a PHP backend. Features a 5x5 question grid with HTML, CSS, JavaScript, and PHP for server-side functionality.
 
