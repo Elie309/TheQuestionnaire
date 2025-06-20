@@ -197,7 +197,7 @@ body {
 }
 
 .header h1 {
-  font-size: 2.5rem;
+  font-size: clamp(2.5rem, 5vw, 3.5rem); /* Increased responsive font size */
   background: linear-gradient(135deg, #2e347f, #414694);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -312,7 +312,7 @@ body {
   border: 2px solid #e1e5e9;
   border-radius: 12px;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: clamp(1.3rem, 3vw, 1.8rem); /* Increased responsive font size */
   font-weight: bold;
   color: #2e347f;
   transition: all 0.3s ease;
@@ -360,7 +360,7 @@ body {
 /* Progress */
 .progress {
   text-align: center;
-  font-size: 1.1rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem); /* Increased responsive font size */
   color: #666;
   font-weight: 500;
 }
@@ -370,13 +370,15 @@ body {
   background: white;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 40px;
+  padding: min(40px, 4vh); /* Responsive padding that doesn't take too much space */
   width: 100%;
   max-width: 900px;
   animation: slideIn 0.4s ease-out;
   min-height: 60vh;
+  max-height: 95vh; /* Ensure it fits within viewport */
   display: flex;
   flex-direction: column;
+  overflow-y: auto; /* Allow scrolling if content overflows */
 }
 
 .question-display.hidden {
@@ -387,13 +389,14 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
+  margin-bottom: min(25px, 3vh); /* Responsive margin */
+  padding-bottom: min(15px, 2vh); /* Responsive padding */
   border-bottom: 2px solid #f0f0f0;
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .question-id {
-  font-size: 1.5rem;
+  font-size: clamp(1.6rem, 4vw, 2.2rem); /* Increased responsive font size */
   font-weight: bold;
   background: linear-gradient(135deg, #2e347f, #414694);
   -webkit-background-clip: text;
@@ -427,22 +430,27 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0; /* Allow shrinking */
+  overflow: hidden; /* Prevent overflow */
 }
 
 .question-content,
 .answer-content {
   flex: 1;
+  min-height: 0; /* Allow shrinking */
+  overflow-y: auto; /* Allow scrolling if content is too long */
 }
 
 .answer-label {
-  font-size: 1.1rem;
+  font-size: clamp(1.3rem, 3vw, 1.8rem); /* Increased responsive font size */
   font-weight: bold;
   color: #34a853;
   margin-bottom: 15px;
   padding: 10px 20px;
   background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
   border-radius: 8px;
-  display: inline-block;  border-left: 4px solid #34a853;
+  display: inline-block;
+  border-left: 4px solid #34a853;
 }
 
 /* Content Layout for side-by-side text and image */
@@ -479,12 +487,14 @@ body {
 
 .question-text,
 .answer-text {
-  font-size: 1.3rem;
-  line-height: 1.6;
+  font-size: clamp(1.4rem, 3vw, 2rem); /* Increased font size with responsive scaling */
+  line-height: 1.5; /* Slightly reduced line height to fit more content */
   color: #333;
   text-align: start;
   flex: 1;
   min-width: 0; /* Allows text to shrink if needed */
+  max-height: 45vh; /* Limit height to prevent overflow */
+  overflow-y: auto; /* Allow scrolling if text is too long */
 }
 
 /* Responsive behavior for content layout */
@@ -497,10 +507,11 @@ body {
   .content-layout[dir="rtl"] {
     flex-direction: column;
   }
-  
-  .question-text,
+    .question-text,
   .answer-text {
-    font-size: 1.1rem;
+    font-size: clamp(1.2rem, 4vw, 1.5rem); /* Increased but responsive for mobile */
+    max-height: 35vh; /* Limit height to prevent overflow */
+    overflow-y: auto; /* Allow scrolling if needed */
   }
   
   .question-image,
@@ -536,7 +547,7 @@ body {
 }
 
 .instruction span {
-  font-size: 1.1rem;
+  font-size: clamp(1.3rem, 2.8vw, 1.7rem); /* Increased responsive font size */
   color: #2e347f;
   font-weight: 500;
 }
@@ -586,9 +597,8 @@ body {
   .logo-section {
     justify-content: center;
   }
-
   .header h1 {
-    font-size: 2rem;
+    font-size: clamp(2rem, 6vw, 2.8rem); /* Increased responsive font for mobile */
   }
 
   .logo-placeholder {
@@ -602,9 +612,8 @@ body {
 
   .board-grid {
     gap: 10px;
-  }
-  .question-cell {
-    font-size: 1rem;
+  }  .question-cell {
+    font-size: clamp(1.1rem, 4vw, 1.4rem); /* Increased responsive font for mobile */
   }
 
   .settings-dropdown {
@@ -628,13 +637,12 @@ body {
   .board-grid {
     gap: 8px;
   }
-
   .question-cell {
-    font-size: 0.9rem;
+    font-size: clamp(1rem, 4.5vw, 1.3rem); /* Increased responsive font for small mobile */
   }
 
   .header h1 {
-    font-size: 1.8rem;
+    font-size: clamp(1.8rem, 6.5vw, 2.5rem); /* Increased responsive font for small mobile */
   }
 
   .logo-placeholder {
