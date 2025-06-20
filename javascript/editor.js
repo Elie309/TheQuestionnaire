@@ -17,10 +17,9 @@ class QuestionEditor {
         this.initializeEmptySet();
 
         // Check for URL parameters
-        this.checkForLoadParameters();
-
-        // Show empty state initially
+        this.checkForLoadParameters();        // Show empty state initially and update position counter
         this.showEmptyState();
+        this.updatePositionCounter();
     }
 
     initializeEmptySet() {
@@ -209,22 +208,26 @@ class QuestionEditor {
 
         // Update question list
         this.updateQuestionList();
-    }
-
+    } 
+    
     findEmptyPosition() {
         for (const id in this.questions) {
-            if (!this.questions[id].question) {
+            const q = this.questions[id];
+            // Check if all fields are empty
+            if (!q.question && !q.answer && !q.questionImage && !q.answerImage) {
                 return id;
             }
         }
         return null; // All positions are filled
-    }
-
+    } 
+    
+    
     saveCurrentQuestion() {
         if (!this.currentQuestionId) return;
 
         this.saveFormToQuestion(this.currentQuestionId);
         this.updateQuestionList();
+        this.updatePositionCounter();
 
         // Show feedback
         alert(`Question ${this.currentQuestionId} saved!`);
@@ -247,10 +250,9 @@ class QuestionEditor {
             document.getElementById('question-text').value = '';
             document.getElementById('answer-text').value = '';
             this.removeImage('question');
-            this.removeImage('answer');
-
-            // Update list
+            this.removeImage('answer');        // Update list and position counter
             this.updateQuestionList();
+            this.updatePositionCounter();
         }
     }
 
@@ -436,8 +438,8 @@ class QuestionEditor {
     showEmptyState() {
         document.getElementById('empty-state').classList.remove('hidden');
         document.getElementById('question-edit-area').classList.remove('active');
-    }
-
+    } 
+    
     updateQuestionList() {
         const listElement = document.getElementById('question-list');
         listElement.innerHTML = '';
@@ -445,8 +447,8 @@ class QuestionEditor {
         for (const id in this.questions) {
             const question = this.questions[id];
 
-            // Only show questions that have content
-            if (question.question || question.answer) {
+            // Only show questions that have content (text or images)
+            if (question.question || question.answer || question.questionImage || question.answerImage) {
                 const item = document.createElement('div');
                 item.className = 'question-list-item';
                 if (id === this.currentQuestionId) {
@@ -455,11 +457,21 @@ class QuestionEditor {
 
                 const idSpan = document.createElement('span');
                 idSpan.className = 'question-list-id';
-                idSpan.textContent = id;
-
-                const textSpan = document.createElement('span');
+                idSpan.textContent = id; const textSpan = document.createElement('span');
                 textSpan.className = 'question-list-text';
-                textSpan.textContent = question.question || '(No question text)';
+
+                // Show text content or indicator
+                let displayText = question.question || '(No question text)';
+
+                // Add indicators for images if present
+                if (question.questionImage || question.answerImage) {
+                    let imgIndicator = '';
+                    if (question.questionImage) imgIndicator += '🖼️Q ';
+                    if (question.answerImage) imgIndicator += '🖼️A ';
+                    displayText = imgIndicator + displayText;
+                }
+
+                textSpan.textContent = displayText;
 
                 // Set appropriate text direction
                 if (question.question && this.containsArabic(question.question)) {
@@ -492,6 +504,44 @@ class QuestionEditor {
         }
     }
 
+    updatePositionCounter() {
+        // Count filled positions
+        let filledCount = 0;
+        let totalCount = 0;
+
+        for (const id in this.questions) {
+            totalCount++;
+            const q = this.questions[id];
+            if (q.question || q.answer || q.questionImage || q.answerImage) {
+                filledCount++;
+            }
+        }
+
+        // Display the count in the UI
+        const counterElement = document.getElementById('position-counter');
+        if (counterElement) {
+            counterElement.textContent = `${filledCount}/${totalCount} positions filled`;
+        } else {
+            // Create counter element if it doesn't exist
+            const container = document.querySelector('.editor-header');
+            const counter = document.createElement('div');
+            counter.id = 'position-counter';
+            counter.className = 'position-counter';
+            counter.textContent = `${filledCount}/${totalCount} positions filled`;
+
+            // Add some basic styling inline
+            counter.style.fontSize = '0.9rem';
+            counter.style.marginLeft = '10px';
+            counter.style.color = '#666';
+
+            // Insert after the set name input
+            const setNameInput = document.getElementById('set-name');
+            if (setNameInput && container) {
+                container.insertBefore(counter, setNameInput.nextSibling);
+            }
+        }
+    }
+
     async loadQuestionSet(filename) {
         try {
             // Show loading feedback
@@ -516,10 +566,9 @@ class QuestionEditor {
 
             // Set the name (without .csv extension)
             this.setName = filename.replace(/\.csv$/i, '');
-            document.getElementById('set-name').value = this.setName;
-
-            // Update the question list
+            document.getElementById('set-name').value = this.setName;        // Update the question list and position counter
             this.updateQuestionList();
+            this.updatePositionCounter();
 
             // Show first question if any
             const firstQuestionId = Object.keys(questions).find(id =>
